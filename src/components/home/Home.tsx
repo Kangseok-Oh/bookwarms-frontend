@@ -1,15 +1,31 @@
-import { Box, VStack, Image, IconButton, Text, Grid, HStack, Button } from "@chakra-ui/react";
+import { Box, VStack, Image, IconButton, Text, Grid, HStack, Button, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader } from "@chakra-ui/react";
+import React from "react";
 import { FaStar } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdMenu } from "react-icons/md";
 
 
 export default function Home() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef = React.useRef<HTMLButtonElement>(null)
     return (
         <VStack alignItems={"center"} borderBottomWidth={1}>
             <VStack w={"70%"}>
                 <HStack mt={3} w={"100%"} alignItems={"flex-start"}>
-                    <Button variant={"ghost"} leftIcon={<MdMenu/>}>도서 카테고리</Button>
+                    <>
+                        <Button ref={btnRef} onClick={onOpen} variant={"ghost"} leftIcon={<MdMenu/>}>도서 카테고리</Button>
+                        <Drawer
+                                isOpen={isOpen}
+                                placement='left'
+                                onClose={onClose}
+                                finalFocusRef={btnRef}>
+                        <DrawerOverlay />
+                        <DrawerContent>
+                            <DrawerCloseButton />
+                            <DrawerHeader>도서 카테고리</DrawerHeader>
+                        </DrawerContent>
+                        </Drawer>
+                    </>
                     <Button variant={"ghost"}>기획전/이벤트</Button>
                 </HStack>
                 <Box position={"relative"} maxH={"500"} overflow={"hidden"}>

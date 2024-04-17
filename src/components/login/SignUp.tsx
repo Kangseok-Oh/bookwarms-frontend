@@ -1,5 +1,6 @@
 import { Box, Button, Input, InputGroup, InputLeftElement, VStack, Text, Select } from "@chakra-ui/react";
-import { FaEnvelope, FaLock, FaUser, FaUserSecret } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { FaUserTag } from "react-icons/fa6";
 import SocialLogIn from "./SocialLogIn";
 
 export default function SignUp() {
@@ -21,12 +22,12 @@ export default function SignUp() {
                             <FaLock/>
                         </Box>
                     }/>
-                    <Input variant={"filled"} placeholder="비밀번호"/>
+                    <Input type="password" variant={"filled"} placeholder="비밀번호"/>
                 </InputGroup>
                 <InputGroup mt={2}>
                     <InputLeftElement children={
                         <Box color={"gray.400"}>
-                            <FaUserSecret/>
+                            <FaUserTag/>
                         </Box>
                     }/>
                     <Input variant={"filled"} placeholder="이름"/>

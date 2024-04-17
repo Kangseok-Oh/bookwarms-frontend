@@ -5,6 +5,9 @@ import Home from "./components/home/Home";
 import LogIn from "./components/login/LogIn";
 import SignUp from "./components/login/SignUp";
 import BookList from "./components/book/BookList";
+import Cart from "./components/cart/Cart";
+import Bookshelf from "./components/bookshelf/Bookshelf";
+import BookDetail from "./components/bookdetail/BookDetail";
 
 const router = createBrowserRouter([
     {
@@ -25,8 +28,20 @@ const router = createBrowserRouter([
                 element: <SignUp/>
             },
             {
+                path: "user/cart",
+                element: <Cart/>
+            },
+            {
+                path: "user/bookshelf",
+                element: <Bookshelf/>
+            },
+            {
                 path: "book",
                 element: <BookList/>
+            },
+            {
+                path: "book/:bookPk",
+                element: <BookDetail/>
             }
         ]
     }

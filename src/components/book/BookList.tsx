@@ -17,7 +17,7 @@ export default function BookList() {
                 </HStack>
                 <Grid templateColumns={"repeat(6, 1fr)"} columnGap={4}>
                     {/* 나중에 api 완성되면 컴포넌트 만들어서 대체 */}
-                    <VStack alignItems={"flex-start"}>
+                    <VStack as={"a"} href="/book/1" alignItems={"flex-start"}>
                         <Image border='1px' maxW={"100%"} objectFit={"cover"} src="https://img.ridicdn.net/cover/5464000017/xxlarge#1" />
                         <Text mb={-1} fontSize={"large"}>불변의 법칙</Text>
                         <Text color={"gray.400"} fontSize={"small"}>모건 하우절</Text>

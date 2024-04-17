@@ -31,8 +31,8 @@ export default function Header() {
                         <Input variant={'filled'} size='lg' placeholder="검색" />
                     </InputGroup>
                     <HStack spacing={10}>
-                        <IconButton variant={"ghost"} aria-label="to go bookshelf" icon={<FaBook size={'lg'}/>}/>
-                        <IconButton variant={"ghost"} aria-label="to go bookcart" icon={<FaShoppingCart size={'lg'}/>}/>
+                        <IconButton as={"a"} href="/user/bookshelf" variant={"ghost"} aria-label="to go bookshelf" icon={<FaBook size={'lg'}/>}/>
+                        <IconButton as={"a"} href="/user/cart" variant={"ghost"} aria-label="to go bookcart" icon={<FaShoppingCart size={'lg'}/>}/>
                         <IconButton variant={"ghost"} aria-label="to go mypage" icon={<FaUser size={'lg'}/>}/>
                     </HStack>
                 </HStack>
