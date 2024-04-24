@@ -8,6 +8,8 @@ import BookList from "./components/book/BookList";
 import Cart from "./components/cart/Cart";
 import Bookshelf from "./components/bookshelf/Bookshelf";
 import BookDetail from "./components/bookdetail/BookDetail";
+import Payment from "./components/payment/Payment";
+import PaymentOk from "./components/payment/PaymentOk";
 
 const router = createBrowserRouter([
     {
@@ -42,6 +44,14 @@ const router = createBrowserRouter([
             {
                 path: "book/:bookPk",
                 element: <BookDetail/>
+            },
+            {
+                path: "payment",
+                element: <Payment/>
+            },
+            {
+                path: "payment/ok",
+                element: <PaymentOk/>
             }
         ]
     }
