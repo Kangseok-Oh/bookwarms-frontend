@@ -1,21 +1,40 @@
 import { Box, Button, HStack, IconButton, Input, InputGroup, InputLeftElement, Text, VStack } from "@chakra-ui/react";
 import { FaBook, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa"
 import { Link } from "react-router-dom";
+import { userInfoApi, logOutApi } from "../../api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Header() {
+    const {isLoading, data, isError} = useQuery({queryKey: ['getUserInfo'], queryFn: userInfoApi, retry: false});
+    const queryClient = useQueryClient();
+    const mutation = useMutation({mutationFn: logOutApi,
+        onSuccess: () => {
+            queryClient.refetchQueries({queryKey: ['getUserInfo']});
+        }
+    }) 
+    const onLogOut = async () => {
+        mutation.mutate()
+    }
     return (
         <VStack alignItems={"center"}>
             <HStack width={"70%"} justifyContent={"flex-end"}>
-                <Box>
+                <HStack>
                     <Button fontSize={"small"} variant={"ghost"}>고객센터</Button>
-                    <Link to={"/user/signup"}>
-                        <Button fontSize={"small"} variant={"ghost"}>회원가입</Button>
-                    </Link>        
-                    <Link to={"/user/login"}>
-                        <Button fontSize={"small"} variant={"ghost"}>로그인</Button>
-                    </Link>
-
-                </Box>
+                    {!isLoading ? (isError ? 
+                        <>
+                            <Link to={"/user/signup"}>
+                                <Button fontSize={"small"} variant={"ghost"}>회원가입</Button>
+                            </Link>        
+                            <Link to={"/user/login"}>
+                                <Button fontSize={"small"} variant={"ghost"}>로그인</Button>
+                            </Link>
+                        </> :
+                        <>
+                            <Text fontSize={'small'}>{data.user_name}님 안녕하세요!</Text>
+                            <Button onClick={onLogOut} fontSize={"small"} variant={"ghost"}>로그아웃</Button>
+                        </>
+                    ):null}
+                </HStack>
             </HStack>
             <HStack width={"70%"} mt={2} pb={6} justifyContent={"space-between"} borderBottomWidth={1}>
                 <Box>

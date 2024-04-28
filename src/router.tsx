@@ -10,6 +10,7 @@ import Bookshelf from "./components/bookshelf/Bookshelf";
 import BookDetail from "./components/bookdetail/BookDetail";
 import Payment from "./components/payment/Payment";
 import PaymentOk from "./components/payment/PaymentOk";
+import KakaoLogIn from "./components/login/KakaoLogIn";
 
 const router = createBrowserRouter([
     {
@@ -23,7 +24,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "user/login",
-                element: <LogIn/>
+                element: <LogIn/>,                
+            },
+            {
+                path: "user/login/kakao",
+                element: <KakaoLogIn/>
             },
             {
                 path: "user/signup",
@@ -54,6 +59,7 @@ const router = createBrowserRouter([
                 element: <PaymentOk/>
             }
         ]
+
     }
 ]);
 
