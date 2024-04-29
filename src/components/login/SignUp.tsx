@@ -6,6 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { signUpApi } from "../../api";
 import { getValue } from "@testing-library/user-event/dist/utils";
+import { useNavigate } from "react-router-dom";
 
 interface IForm {
     email: string;
@@ -20,6 +21,7 @@ interface IForm {
 
 export default function SignUp() {
     const toast = useToast();
+    const navigate = useNavigate();
     const {register, handleSubmit, formState:{errors}, control} = useForm<IForm>();
     const mutation = useMutation({mutationFn: signUpApi,
         onSuccess: (data) => {
@@ -34,6 +36,7 @@ export default function SignUp() {
                     title: "회원가입 성공!",
                     status: "success"
                 })
+                navigate("/user/login")
             }
         },
     })

@@ -14,8 +14,11 @@ export default function KakaoLogIn() {
     const mutation = useMutation({mutationFn: kakaoLogInApi,
         onSuccess: (data) => {
             if (data === 200) {
-                queryClient.refetchQueries({queryKey: ["me"]});
                 navigate("/");
+                queryClient.refetchQueries({queryKey: ["getUserInfo"]});      
+            }
+            if (data === 400) {
+                navigate("/user/login")
             }
             
         }
