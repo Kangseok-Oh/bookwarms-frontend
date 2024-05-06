@@ -1,3 +1,4 @@
+import { QueryFunctionContext } from "@tanstack/react-query";
 import axios from "axios";
 import Cookie from "js-cookie";
 
@@ -53,3 +54,8 @@ export const signUpApi = ({email, password, name, gender, birth}: IUserSignUpVar
             "X-CSRFToken": Cookie.get("csrftoken") || "",
         }
 }).then(response => response.data)
+
+export const categoryBookListApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, categoryId] = queryKey;
+    return instance.get(`book/categorybooklist/${categoryId}`).then((response) => response.data)
+}

@@ -19,8 +19,7 @@ export default function KakaoLogIn() {
             }
             if (data === 400) {
                 navigate("/user/login")
-            }
-            
+            }    
         }
     });
     useEffect(() => {
