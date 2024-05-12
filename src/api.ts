@@ -53,9 +53,21 @@ export const signUpApi = ({email, password, name, gender, birth}: IUserSignUpVar
         headers: {
             "X-CSRFToken": Cookie.get("csrftoken") || "",
         }
-}).then(response => response.data)
+}).then(response => response.data);
 
 export const categoryBookListApi = ({queryKey}: QueryFunctionContext) => {
     const [_, categoryId] = queryKey;
-    return instance.get(`book/categorybooklist/${categoryId}`).then((response) => response.data)
+    return instance.get(`book/categorybooklist/${categoryId}`).then((response) => response.data);
 }
+
+export const categoryApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, categoryId] = queryKey;
+    return instance.get(`category/${categoryId}`).then((response) => response.data)
+}
+
+export const bookDetailApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`book/bookdetail/${bookId}`).then((response) => response.data);
+}
+
+export const bookShelfApi = () => instance.get("bookshelf/").then((response) => response.data);
