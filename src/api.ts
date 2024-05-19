@@ -71,3 +71,40 @@ export const bookDetailApi = ({queryKey}: QueryFunctionContext) => {
 }
 
 export const bookShelfApi = () => instance.get("bookshelf/").then((response) => response.data);
+
+export const cartListApi = () => instance.get("cart/").then((response) => response.data);
+
+export const addCartApi = (book_isbn:string) => 
+    instance.post('cart/add', {book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+}).then(response => response.data);
+
+export const deleteCartApi = (book_isbn:string[]) =>
+    instance.delete('cart/delete', {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+          },
+        data: {
+            book_isbn: book_isbn
+        }
+    }
+).then((response) => response.data);
+
+export const orderItemApi = (book_isbn: string[]) =>
+    instance.post('order/', {book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+    }
+).then((response) => response.data);
+
+export const orderApi = (book_isbn: string[]) =>
+    instance.post('order/payment', {book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+    }
+).then((response) => response.data);
+

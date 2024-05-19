@@ -1,8 +1,8 @@
-import { VStack, HStack, Image, Heading, Text, Button, IconButton } from "@chakra-ui/react";
-import { useQuery } from "@tanstack/react-query";
+import { VStack, HStack, Image, Heading, Text, Button, IconButton, useToast } from "@chakra-ui/react";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { bookDetailApi } from "../../api";
+import { addCartApi, bookDetailApi } from "../../api";
 
 interface IBookDetailForm {
     book_isbn: string;
@@ -19,10 +19,35 @@ interface IBookDetailForm {
     book_author_intro: string;
 }
 
+interface IAddCart {
+    book_isbn: string
+}
+
 export default function BookDetail() {
     const {bookId} = useParams();
     const bookDetailQuery = useQuery<IBookDetailForm>({queryKey: ['getBookDetail', bookId], queryFn: bookDetailApi})
     const book = bookDetailQuery.data;
+    const toast = useToast();
+    const mutation = useMutation({mutationFn: addCartApi,
+        onSuccess: (data) => {
+            if (data.error) {
+                toast({
+                    title: `${data.error}`,
+                    status: "error"
+                })
+            }
+            if (data.ok) {
+                toast({
+                    title: `${data.ok}`,
+                    status: "success"
+                })
+            }
+        }
+    });
+    const onClick = () => {
+        const book_isbn = bookId;
+        mutation.mutate(book_isbn as any);
+    }
     return(
         <VStack alignItems={"center"}>
             <VStack w={"70%"}>
@@ -53,7 +78,7 @@ export default function BookDetail() {
                         </VStack>
                         <HStack w={"100%"} justifyContent={"flex-end"}>
                             <IconButton aria-label="like" icon={<FaRegHeart/>} />
-                            <Button>장바구니 담기</Button>
+                            <Button onClick={onClick}>장바구니 담기</Button>
                             <Button colorScheme="blue">바로 구매</Button>
                         </HStack>
                     </VStack>

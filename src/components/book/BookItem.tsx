@@ -21,7 +21,7 @@ export default function BookItem({bookIsbn, bookCoverUrl, bookName, bookRating, 
                 <FaStar/>
                 <Text fontSize={"small"}>{bookRating}({bookReviewCount})</Text>
             </HStack>
-            <Text mb={-2} color={"blue"}>소장 {bookPrice}</Text>
+            <Text mb={-2} color={"blue"}>소장 {bookPrice}원</Text>
             <Text color={"red"}>거래 17,500원</Text>
         </VStack>
     )
