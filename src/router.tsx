@@ -13,6 +13,7 @@ import PaymentOk from "./components/payment/PaymentOk";
 import KakaoLogIn from "./components/login/KakaoLogIn";
 import CategoryBookList from "./components/book/CategoryBookList";
 import BookViewer from "./components/bookshelf/BookViewer";
+import BookTrade from "./components/booktrade/BookTrade";
 
 const router = createBrowserRouter([
     {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: "book/:bookId",
                 element: <BookDetail/>
+            },
+            {
+                path: "book/booktrade",
+                element: <BookTrade/>
             },
             {
                 path: "payment",

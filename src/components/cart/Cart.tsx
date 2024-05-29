@@ -1,4 +1,4 @@
-import { VStack, HStack, Text, Checkbox, Button} from "@chakra-ui/react";
+import { VStack, HStack, Text, Checkbox, Button, useToast} from "@chakra-ui/react";
 import { useMutation, useQuery} from "@tanstack/react-query";
 import { cartListApi, deleteCartApi } from "../../api";
 import CartItem from "./CartItem";
@@ -26,6 +26,7 @@ interface ICartItem {
 
 export default function Cart() {
     const {data} = useQuery<ICartList>({queryKey: ['getCartList'], queryFn: cartListApi})
+    const toast = useToast();
 
     const [checkedBookIsbn, setCheckedBookIsbn] = React.useState<string[]>([]);
     const [checkedItems, setCheckedItems] = React.useState(data?.cartitem_set.map(() => false));
@@ -118,7 +119,16 @@ export default function Cart() {
                             mt={2} 
                             w={100} 
                             colorScheme={"red"}
-                            onClick={(e) => navigate("/payment", {state: checkedBookIsbn})}>결제하기</Button>
+                            onClick={(e) => {
+                                if (checkedBookIsbn.length == 0) {
+                                    toast({
+                                        title: '구매할 책이 없습니다!',
+                                        status: "error"
+                                    })
+                                } else {
+                                    navigate("/payment", {state: checkedBookIsbn})
+                                }
+                            }}>결제하기</Button>
                     </VStack>
                 </HStack>
             </VStack>

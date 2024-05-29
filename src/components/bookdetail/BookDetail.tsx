@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { addCartApi, bookDetailApi } from "../../api";
+import Trade from "./Trade";
 
 interface IBookDetailForm {
     book_isbn: string;
@@ -52,8 +53,8 @@ export default function BookDetail() {
         <VStack alignItems={"center"}>
             <VStack w={"70%"}>
                 <HStack my={5} w={"100%"}>
-                    <Image border='1px' maxW={"25%"} objectFit={"cover"} src={book?.book_cover_path}/>
-                    <VStack ml={3} w={"75%"} alignItems={"flex-start"}>
+                    <Image border='1px' maxW={"40%"} objectFit={"cover"} src={book?.book_cover_path}/>
+                    <VStack ml={3} w={"60%"} alignItems={"flex-start"}>
                         <Heading fontSize={"xx-large"}>{book?.book_name}</Heading>
                         <HStack color={"red"}>
                             <FaStar/>
@@ -81,8 +82,12 @@ export default function BookDetail() {
                             <Button onClick={onClick}>장바구니 담기</Button>
                             <Button colorScheme="blue">바로 구매</Button>
                         </HStack>
+                        <HStack w={"100%"}>
+                            <Trade/>
+                        </HStack>
                     </VStack>
                 </HStack>
+                
                 <VStack w={"100%"}>
                     <HStack w={"100%"} alignItems={"flex-start"} borderBottomWidth={1}>
                         <Heading mb={2}>도서 소개</Heading>

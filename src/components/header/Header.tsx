@@ -51,7 +51,7 @@ export default function Header() {
                     </InputGroup>
                     <HStack spacing={10}>
                         <IconButton as={"a"} href={!isLoading ? (isError ? "/user/login" : "/user/bookshelf") : "/"} variant={"ghost"} aria-label="to go bookshelf" icon={<FaBook size={'lg'}/>}/>
-                        <IconButton as={"a"} href="/user/cart" variant={"ghost"} aria-label="to go bookcart" icon={<FaShoppingCart size={'lg'}/>}/>
+                        <IconButton as={"a"} href={!isLoading ? (isError ? "/user/login" : "/user/cart") : "/"} variant={"ghost"} aria-label="to go bookcart" icon={<FaShoppingCart size={'lg'}/>}/>
                         <IconButton variant={"ghost"} aria-label="to go mypage" icon={<FaUser size={'lg'}/>}/>
                     </HStack>
                 </HStack>
