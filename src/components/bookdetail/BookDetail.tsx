@@ -83,7 +83,7 @@ export default function BookDetail() {
                             <Button colorScheme="blue">바로 구매</Button>
                         </HStack>
                         <HStack w={"100%"}>
-                            <Trade/>
+                            <Trade bookId = {bookId? bookId: ""}/>
                         </HStack>
                     </VStack>
                 </HStack>

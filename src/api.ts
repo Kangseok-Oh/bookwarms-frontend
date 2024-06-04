@@ -28,6 +28,22 @@ export interface IUsernameLoginError {
     error: string;
 }
 
+export interface ISellVariables {
+    sell_price: number;
+    sell_book_isbn: string;
+}
+
+export interface IPurVariables {
+    purchase_price: number;
+    purchase_book_isbn: string;
+}
+
+export interface ITradeVariables {
+    trade_price: number;
+    trade_book_isbn: string;
+}
+
+
 export const userInfoApi = () => instance.get('user/me').then((response) => response.data);
 
 export const logOutApi = () => instance.post('user/logout', null, {
@@ -107,4 +123,70 @@ export const orderApi = (book_isbn: string[]) =>
         }
     }
 ).then((response) => response.data);
+
+export const TradeChartApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`trade/tradechart/${bookId}`).then((response) => response.data);
+}
+
+export const SellListApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`trade/selllist/${bookId}`).then((response) => response.data);
+}
+
+export const purchaseListApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`trade/purchaselist/${bookId}`).then((response) => response.data);
+}
+
+export const tradeBookApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`book/trade/${bookId}`).then((response) => response.data);
+}
+
+export const immediatePurPriceApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`trade/immediate-pur-price/${bookId}`).then((response) => response.data);
+}
+
+export const immediateSellPriceApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`trade/immediate-sell-price/${bookId}`).then((response) => response.data);
+}
+
+export const sellApi = ({sell_price, sell_book_isbn}: ISellVariables) =>
+    instance.post('trade/sell', {sell_price, sell_book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+    }
+).then((response) => response.data);
+
+export const purchaseApi = ({purchase_price, purchase_book_isbn}: IPurVariables) =>
+    instance.post('trade/purchase', {purchase_price, purchase_book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+    }
+).then((response) => response.data);
+
+export const immediateSellApi = ({trade_price, trade_book_isbn}: ITradeVariables) =>
+    instance.post('trade/immediate-sell', {trade_price, trade_book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+    }
+).then((response) => response.data);
+
+export const immediatePurApi = ({trade_price, trade_book_isbn}: ITradeVariables) =>
+    instance.post('trade/immediate-purchase', {trade_price, trade_book_isbn}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+    }
+).then((response) => response.data);
+
+
+
+
 
