@@ -31,6 +31,7 @@ export default function Header() {
                         </> :
                         <>
                             <Text fontSize={'small'}>{data.user_name}님 안녕하세요!</Text>
+                            <Text fontSize={'small'}>|  잔액: {data.user_cash}원</Text>
                             <Button onClick={onLogOut} fontSize={"small"} variant={"ghost"}>로그아웃</Button>
                         </>
                     ):null}

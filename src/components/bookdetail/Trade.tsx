@@ -1,7 +1,7 @@
-import { Box, Tabs, Tab, TabList, TabPanels, TabPanel, TableContainer, Table, Thead, Tr, Th, Tbody, Td, HStack, Button } from '@chakra-ui/react';
+import { Box, Text, Tabs, Tab, TabList, TabPanels, TabPanel, TableContainer, Table, Thead, Tr, Th, Tbody, Td, HStack, Button, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend, ReferenceLine } from 'recharts';
-import { SellListApi, TradeChartApi, purchaseListApi } from '../../api';
+import { SellListApi, TradeChartApi, immediatePurPriceApi, immediateSellPriceApi, purchaseListApi } from '../../api';
 
 interface ITradeChart {
     trade_date: string
@@ -22,10 +22,21 @@ interface IBookId {
     bookId: string
 }
 
+interface IImmediatePurPrice {
+    purchase_price: number
+}
+
+interface IImmediateSellPrice {
+    sell_price: number
+}
+
 export default function Trade({bookId} : IBookId) {
     const tradeChartQuery = useQuery<ITradeChart[]>({queryKey: ['getTradeChart', bookId], queryFn: TradeChartApi})
     const SellListQuery = useQuery<ISellList[]>({queryKey: ["getSellList", bookId], queryFn: SellListApi})
     const PurchaseListQuery = useQuery<IPurchaseList[]>({queryKey: ["getPurchaseList", bookId], queryFn: purchaseListApi})
+    const immediateSellPriceQuery = useQuery<IImmediateSellPrice>({queryKey: ["getImmediateSellPrice", bookId], queryFn: immediateSellPriceApi})
+    const immediatePurPriceQuery = useQuery<IImmediatePurPrice>({queryKey: ["getImmediatePurPrice", bookId], queryFn: immediatePurPriceApi})
+    
     PurchaseListQuery.data?.sort(function(a, b){
         return a.purchase_price + b.purchase_price;
     });
@@ -115,8 +126,24 @@ export default function Trade({bookId} : IBookId) {
                 </TabPanels>
             </Tabs>
             <HStack w={"100%"}>
-                <Button as={'a'} href={`/book/trade/sell/${bookId}`} w={'50%'} colorScheme={'blue'}>판매 입찰하기</Button>
-                <Button as={'a'} href={`/book/trade/purchase/${bookId}`} w={'50%'} colorScheme={'red'}>구매 입찰하기</Button>
+                <Button as={'a'} href={`/book/trade/sell/${bookId}`} w={'50%'} colorScheme={'blue'}>
+                    <HStack>
+                        <Text>판매 |</Text>
+                        <VStack spacing={0}>
+                            <Text fontSize={"small"}>{immediatePurPriceQuery.data?.purchase_price ? immediatePurPriceQuery.data?.purchase_price : "  -  "}원</Text>
+                            <Text fontSize={"small"}>(즉시 판매)</Text>
+                        </VStack>
+                    </HStack>
+                </Button>
+                <Button as={'a'} href={`/book/trade/purchase/${bookId}`} w={'50%'} colorScheme={'red'}>
+                    <HStack>
+                        <Text>구매 |</Text>
+                        <VStack spacing={0}>
+                            <Text fontSize={"small"}>{immediateSellPriceQuery.data?.sell_price ? immediateSellPriceQuery.data?.sell_price : "  -  "}원</Text>
+                            <Text fontSize={"small"}>(즉시 구매)</Text>
+                        </VStack>
+                    </HStack>
+                </Button>
             </HStack>
         </Box>
     );

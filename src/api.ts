@@ -43,6 +43,12 @@ export interface ITradeVariables {
     trade_book_isbn: string;
 }
 
+export interface ISubmitReviewVariables {
+    content: string;
+    rating: number;
+    bookId: string;
+}
+
 
 export const userInfoApi = () => instance.get('user/me').then((response) => response.data);
 
@@ -186,7 +192,17 @@ export const immediatePurApi = ({trade_price, trade_book_isbn}: ITradeVariables)
     }
 ).then((response) => response.data);
 
+export const reviewListApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, bookId] = queryKey;
+    return instance.get(`review/reviewlist/${bookId}`).then((response) => response.data);
+}
 
+export const submitReviewApi = ({content, rating, bookId}: ISubmitReviewVariables) => 
+    instance.post('review/submit-review', {content, rating, bookId}, {
+        headers: {
+            "X-CSRFToken": Cookie.get("csrftoken") || "",
+        }
+}).then(response => response.data);
 
 
 

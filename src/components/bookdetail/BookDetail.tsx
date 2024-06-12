@@ -1,9 +1,11 @@
-import { VStack, HStack, Image, Heading, Text, Button, IconButton, useToast } from "@chakra-ui/react";
+import { VStack, HStack, Image, Heading, Text, Button, IconButton, useToast, Input, Box, Select } from "@chakra-ui/react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { FaRegHeart, FaStar } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { addCartApi, bookDetailApi } from "../../api";
+import { addCartApi, bookDetailApi, reviewListApi} from "../../api";
 import Trade from "./Trade";
+import ReviewItem from "./ReviewItem";
+import ReviewInput from "./ReviewInput";
 
 interface IBookDetailForm {
     book_isbn: string;
@@ -24,10 +26,19 @@ interface IAddCart {
     book_isbn: string
 }
 
+interface IReviewForm {
+    review_user_email: string
+    review_rating: number
+    review_content: string
+}
+
 export default function BookDetail() {
     const {bookId} = useParams();
     const bookDetailQuery = useQuery<IBookDetailForm>({queryKey: ['getBookDetail', bookId], queryFn: bookDetailApi})
     const book = bookDetailQuery.data;
+
+    const reviewListQuery = useQuery<IReviewForm[]>({queryKey:["getReviewList", bookId], queryFn: reviewListApi})
+
     const toast = useToast();
     const mutation = useMutation({mutationFn: addCartApi,
         onSuccess: (data) => {
@@ -67,17 +78,13 @@ export default function BookDetail() {
                             <Text>|</Text>
                             <Text>{book?.book_publisher} 출판</Text>
                         </HStack>
-                        <VStack w={"100%"} mt={2} alignItems={"flex-start"} borderTopWidth={1}>
+                        <VStack w={"100%"} mt={2} pt={2} alignItems={"flex-start"} borderTopWidth={1}>
                             <HStack w={"100%"} justifyContent={"space-between"}>
                                     <Text>전자책 정가</Text>
                                     <Text color={"blue"}>{book?.book_price}원</Text>
                             </HStack>
-                            <HStack w={"100%"} justifyContent={"space-between"}>
-                                <Text>즉시 거래가</Text>
-                                <Text color={"red"}>17,500원</Text>
-                            </HStack>
                         </VStack>
-                        <HStack w={"100%"} justifyContent={"flex-end"}>
+                        <HStack mt={5} w={"100%"} justifyContent={"flex-end"}>
                             <IconButton aria-label="like" icon={<FaRegHeart/>} />
                             <Button onClick={onClick}>장바구니 담기</Button>
                             <Button colorScheme="blue">바로 구매</Button>
@@ -111,6 +118,20 @@ export default function BookDetail() {
                     <Text>
                         {book?.book_contents}
                     </Text>
+                </VStack>
+                <VStack w={"100%"} mt={10}>
+                    <HStack w={"100%"} alignItems={"flex-start"} borderBottomWidth={1}>
+                        <Heading mb={2}>리뷰({book?.book_review_count})</Heading>
+                    </HStack>
+                    <ReviewInput bookId = {bookId? bookId: ""}/>     
+                    {/* 리뷰 아이템 */}
+                    {reviewListQuery.data?.map((review) => 
+                        <ReviewItem
+                            email = {review.review_user_email}
+                            rating={review.review_rating}
+                            content={review.review_content}  />
+                    )}
+                                     
                 </VStack>
             </VStack>
         </VStack>
