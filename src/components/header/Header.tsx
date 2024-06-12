@@ -1,12 +1,15 @@
 import { Box, Button, HStack, IconButton, Input, InputGroup, InputLeftElement, Text, VStack } from "@chakra-ui/react";
 import { FaBook, FaSearch, FaShoppingCart, FaUser } from "react-icons/fa"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userInfoApi, logOutApi } from "../../api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ChangeEvent, useState } from "react";
 
 export default function Header() {
     const {isLoading, data, isError} = useQuery({queryKey: ['getUserInfo'], queryFn: userInfoApi, retry: false});
     const queryClient = useQueryClient();
+    const navigate =useNavigate();
+    const [userInput, setUserInput] = useState<string>('');
     const mutation = useMutation({mutationFn: logOutApi,
         onSuccess: () => {
             queryClient.refetchQueries({queryKey: ['getUserInfo']});
@@ -15,6 +18,15 @@ export default function Header() {
     const onLogOut = async () => {
         mutation.mutate()
     }
+
+    const onSubmit = (e:React.FormEvent<HTMLInputElement>) => {
+        navigate(`/book/search/${userInput}`)
+    }
+
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setUserInput(e.target.value);
+    }
+
     return (
         <VStack alignItems={"center"}>
             <HStack width={"70%"} justifyContent={"flex-end"}>
@@ -44,11 +56,11 @@ export default function Header() {
                     </Link>
                 </Box>
                 <HStack>
-                    <InputGroup minW={300} mr={10}>
+                    <InputGroup minW={300} mr={10} as={'form'} onSubmit={onSubmit}>
                         <InputLeftElement pointerEvents={"none"}>
                             <FaSearch color="gray"/>
                         </InputLeftElement>
-                        <Input variant={'filled'} size='lg' placeholder="검색" />
+                        <Input variant={'filled'} size='lg' placeholder="검색" onChange={onChange}/>
                     </InputGroup>
                     <HStack spacing={10}>
                         <IconButton as={"a"} href={!isLoading ? (isError ? "/user/login" : "/user/bookshelf") : "/"} variant={"ghost"} aria-label="to go bookshelf" icon={<FaBook size={'lg'}/>}/>

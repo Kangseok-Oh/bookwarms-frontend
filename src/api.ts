@@ -204,5 +204,10 @@ export const submitReviewApi = ({content, rating, bookId}: ISubmitReviewVariable
         }
 }).then(response => response.data);
 
+export const searchBookListApi = ({queryKey}: QueryFunctionContext) => {
+    const [_, keyWord] = queryKey;
+    return instance.get(`book/search/${keyWord}`).then((response) => response.data);
+}
+
 
 

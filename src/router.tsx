@@ -15,6 +15,7 @@ import CategoryBookList from "./components/book/CategoryBookList";
 import BookViewer from "./components/bookshelf/BookViewer";
 import BookTradeSell from "./components/booktrade/BookTradeSell";
 import BookTradePur from "./components/booktrade/BookTradePur";
+import SearchBookList from "./components/book/SearchBookList";
 
 const router = createBrowserRouter([
     {
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
             {
                 path: "book/trade/purchase/:bookId",
                 element: <BookTradePur/>
+            },
+            {
+                path: "book/search/:keyWord",
+                element: <SearchBookList/>
             },
             {
                 path: "payment",
