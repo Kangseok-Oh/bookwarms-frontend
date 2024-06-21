@@ -1,6 +1,7 @@
 import { VStack, Image, Text, HStack } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 
+// 책 데이터 형식 지정
 interface IBookItemProps {
     bookIsbn: string;
     bookCoverUrl: string;
@@ -11,8 +12,10 @@ interface IBookItemProps {
     bookAuthorName: string;
 }
 
+// 책 리스트용 책 아이템 컴포넌트
 export default function BookItem({bookIsbn, bookCoverUrl, bookName, bookRating, bookReviewCount, bookPrice, bookAuthorName}: IBookItemProps) {
     return (
+        // 누르면 상세 페이지 이동
         <VStack as={"a"} href={`/book/${bookIsbn}`} alignItems={"flex-start"}>
             <Image border='1px' maxW={"100%"} objectFit={"cover"} src={bookCoverUrl} />
             <Text mb={-1} fontSize={"large"}>{bookName}</Text>

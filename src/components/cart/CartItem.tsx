@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IoMdClose } from "react-icons/io";
 import { deleteCartApi } from "../../api";
 
+// 책 데이터 형식 지정
 interface ICartItem {
     bookIsbn: string;
     coverImage: string;
@@ -13,15 +14,20 @@ interface ICartItem {
     onChange: (e:  React.ChangeEvent<HTMLInputElement>) => void
 }
 
+// 장바구니 내 책 아이템 컴포넌트
 export default function CartItem({bookIsbn, coverImage, bookName, authorName, bookPrice, isChecked, onChange}: ICartItem) {
     const toast = useToast();
     const queryClient = useQueryClient();
+
+    // 아이템 삭제 처리
     const mutation = useMutation({mutationFn: deleteCartApi,
+        // 삭제 완료되면 장바구니 데이터 재호출
         onSuccess: (data) => {
-            queryClient.refetchQueries({queryKey: ["getCartList"]}); 
+            window.location.replace("/user/cart")
         }
     });
 
+    // 삭제 버튼 클릭 리스너
     const onClick = () => {
         mutation.mutate([bookIsbn,])
     }

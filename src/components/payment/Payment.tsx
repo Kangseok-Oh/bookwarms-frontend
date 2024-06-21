@@ -5,6 +5,7 @@ import { orderApi, orderItemApi } from "../../api";
 import PaymentItem from "./PaymentItem";
 import { useEffect } from "react";
 
+// 결제할 책 데이터 형식 지정
 interface IOrderList {
     book_isbn: string;
     book_cover_path: string;
@@ -12,41 +13,52 @@ interface IOrderList {
     book_price: number;
     book_author_name: string;
 }
+
+// 결제 화면 컴포넌트
 export default function Payment() {
     const {state} = useLocation();
     const navigate = useNavigate();
     const toast = useToast();
+    // 결제할 책 데이터 호출
     const mutation = useMutation({mutationFn: orderItemApi})
+
+    // 결제 처리
     const mutation2 = useMutation({mutationFn: orderApi,
         onSuccess: (data) => {
+            // 실패 시 오류 메시지 출력
             if (data.error) {
                 toast({
                     title: `${data.error}`,
                     status: "error"
                 })
             }
+            // 성공 시 결제 성공 페이지 이동
             if (data.ok) {
                 navigate("/payment/ok")
             }
         },
     })
+
+    // 결제하기 버튼 클릭 리스너
+    const onClick = () => {
+        const total_price = getTotalPrice()
+        mutation2.mutate(state)
+    }
+
+    // 화면 출력될 때 딱 1번 결제할 책 목록 가져오기
     useEffect(() => {
         if (state) {
             mutation.mutate(state)
         }
     }, [])
 
+    // 결제 총 금액 계산
     const getTotalPrice = () => {
         let total = 0;
         mutation.data?.map((book: IOrderList) => total = total + book.book_price);
         return total;
     }
 
-    const onClick = () => {
-        const total_price = getTotalPrice()
-        mutation2.mutate(state)
-    }
-    
     return (
         <VStack alignItems={"center"}>
             <VStack w={"70%"}>
@@ -55,6 +67,7 @@ export default function Payment() {
                         결제
                     </Text>
                 </HStack>
+                {/* 결제할 책 목록 */}
                 {mutation.data?.map((book: IOrderList) => <PaymentItem
                     bookName={book.book_name}
                     coverPath={book.book_cover_path}

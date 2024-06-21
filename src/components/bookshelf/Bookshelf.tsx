@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { bookShelfApi } from "../../api";
 import BookshelfItem from "./BookshelfItem";
 
+// 불러올 책 목록 데이터 형식 지정
 interface IBookshelfBook{
     bookshelf_book_isbn: IBook
 }
@@ -16,6 +17,7 @@ interface IBook {
     book_author_name: string;
 }
 
+// 내 서재 컴포넌트
 export default function Bookshelf() {
     const bookshelfListQuery = useQuery<IBookshelfBook[]>({queryKey: ['getBookshelfList'], queryFn: bookShelfApi})
     return (
@@ -27,15 +29,7 @@ export default function Bookshelf() {
                     </Text>
                 </HStack>
                 <Grid templateColumns={"repeat(6, 1fr)"} columnGap={4}>
-                    <VStack alignItems={"flex-start"}>
-                        <Image border='1px' maxW={"100%"} objectFit={"cover"} src="https://img.ridicdn.net/cover/5464000017/xxlarge#1" />
-                        <Text mb={-1} fontSize={"large"}>불변의 법칙</Text>
-                        <Text color={"gray.400"} fontSize={"small"}>모건 하우절</Text>
-                        <HStack color={"red"}>
-                            <FaStar/>
-                            <Text fontSize={"small"}>4.0</Text>
-                        </HStack>
-                    </VStack>
+                    {/* 책 리스트 */}
                     {bookshelfListQuery.data?.map((book) => <BookshelfItem
                         book_isbn={book.bookshelf_book_isbn.book_isbn}
                         book_cover_path={book.bookshelf_book_isbn.book_cover_path}

@@ -36,15 +36,13 @@ export default function HomeCategory() {
     );
 }
 
+// 카테고리 버튼 데이터 형식
 interface ICategoryItem {
     bigName: string
     smallName: {[key: string]: string}
 }
 
-type objType = {
-    
-}
-
+// 각각의 카테고리 상위 하위 목록 컴포넌트
 function CategoryItem({bigName, smallName}:ICategoryItem) {
     const itemButton = () => {
         let buttonArray = [];

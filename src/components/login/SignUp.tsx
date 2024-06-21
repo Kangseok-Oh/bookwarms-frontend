@@ -8,6 +8,7 @@ import { signUpApi } from "../../api";
 import { getValue } from "@testing-library/user-event/dist/utils";
 import { useNavigate } from "react-router-dom";
 
+// 회원 가입 시 보낼 데이터 형식 지정
 interface IForm {
     email: string;
     password: string;
@@ -18,19 +19,22 @@ interface IForm {
     day: string;
 }
 
-
 export default function SignUp() {
     const toast = useToast();
     const navigate = useNavigate();
     const {register, handleSubmit, formState:{errors}, control} = useForm<IForm>();
+
+    // 회원 가입 처리
     const mutation = useMutation({mutationFn: signUpApi,
         onSuccess: (data) => {
+            // 실패하면 실패한 이유 띄워줌
             if (data.error) {
                 toast({
                     title: `${data.error}`,
                     status: "error"
                 })
             }
+            // 성공하면 메시지 출력 후 로그인 화면 이동
             if (data.ok) {
                 toast({
                     title: "회원가입 성공!",
@@ -40,11 +44,14 @@ export default function SignUp() {
             }
         },
     })
+
+    // 회원가입 폼 submit 리스너
     const onSubmit = ({email, password, name, gender, year, month, day}: IForm) => {
         const birth = year + "-" + month + "-" + day;
         mutation.mutate({email, password, name, gender, birth})
     }
 
+    // 생년월일 선택 옵션 컴포넌트
     const yearOption = () => {
         let optionArray = [];
         for (let i = 1900; i < 2025; i++) {
@@ -74,6 +81,7 @@ export default function SignUp() {
         <VStack mt={"10%"}>
             <VStack as={"form"} onSubmit={handleSubmit(onSubmit)} w={"25%"} borderBottomWidth={1}>
                 <Text as={"b"} fontSize={"3xl"} mb={3}>BookWarms</Text>
+                {/* 이메일 */}
                 <InputGroup>
                     <InputLeftElement children={
                         <Box color={"gray.400"}>
@@ -85,6 +93,7 @@ export default function SignUp() {
                         variant={"filled"} 
                         placeholder="이메일"/>
                 </InputGroup>
+                {/* 패스워드 */}
                 <InputGroup mt={2}>
                     <InputLeftElement children={
                         <Box color={"gray.400"}>
@@ -97,6 +106,7 @@ export default function SignUp() {
                         variant={"filled"} 
                         placeholder="비밀번호"/>
                 </InputGroup>
+                {/* 이릅 */}
                 <InputGroup mt={2}>
                     <InputLeftElement children={
                         <Box color={"gray.400"}>
@@ -108,6 +118,7 @@ export default function SignUp() {
                         variant={"filled"} 
                         placeholder="이름"/>
                 </InputGroup>
+                {/* 성별 선택 */}
                 <Controller
                     name="gender"
                     control={control}
@@ -123,6 +134,7 @@ export default function SignUp() {
                         );
                     }}
                 />
+                {/* 생년월일 선택 */}
                 <HStack w={"100%"}>
                     <Controller
                         name="year"
@@ -167,6 +179,7 @@ export default function SignUp() {
                         }}
                     />
                 </HStack>
+                {/* 회원 가입 버튼 */}
                 <Button type="submit" marginTop={4} colorScheme="red" width={"100%"} mb={4}>가입하기</Button>
             </VStack>
             <SocialLogIn/>

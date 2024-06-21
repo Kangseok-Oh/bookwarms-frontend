@@ -1,6 +1,7 @@
 import { Button, Grid, HStack, Text, VStack, Image } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 
+// 프로토타입 책 리스트 컴포넌트(사용X)
 export default function BookList() {
     return (
         <VStack alignItems={"center"}>

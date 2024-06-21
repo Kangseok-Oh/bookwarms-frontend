@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { immediatePurApi, immediateSellPriceApi, purchaseApi, tradeBookApi } from "../../api";
 import { useForm } from "react-hook-form";
 
+// 입찰할 책 데이터 형식 지정
 interface ITradeBook {
     book_isbn: string
     book_cover_path: string
@@ -12,32 +13,41 @@ interface ITradeBook {
     book_author_name: string
 }
 
+// 즉시 구매가 데이터 형식 지정
 interface IImmediateSellPrice {
     sell_price: number
 }
 
+// 서버로 보낼 입찰가 데이터 형식 지정
 interface IForm {
     purchase_price: number;
 }
 
+//구매 입찰 페이지 컴포넌트
 export default function BookTradePur() {
     const toast = useToast();
+    // 책 코드 파라미터에서 추출
     const {bookId} = useParams();
+
+    // 책 코드에 해당하는 책 데이터 호출
     const tradeBookQuery = useQuery<ITradeBook>({queryKey: ["getTradeBook", bookId], queryFn: tradeBookApi})
     const book = tradeBookQuery.data
 
+    // 해당 책의 현재 즉시 구매가 데이터 호출
     const immediateSellPriceQuery = useQuery<IImmediateSellPrice>({queryKey: ["getImmediateSellPrice", bookId], queryFn: immediateSellPriceApi})
 
     const {register, handleSubmit, formState:{errors}} = useForm<IForm>();
-
+    // 입찰 등록 처리
     const purMutation = useMutation({mutationFn: purchaseApi,
         onSuccess: (data) => {
+            // 실패시 오류 메시지 출력
             if (data.error) {
                 toast({
                     title: `${data.error}`,
                     status: "error"
                 })
             }
+            // 성공 시 성공 메시지 출력
             if (data.ok) {
                 toast({
                     title: `${data.ok}`,
@@ -47,14 +57,17 @@ export default function BookTradePur() {
         }
     })
 
+    // 즉시 구매 처리
     const immediatePurMutation = useMutation({mutationFn: immediatePurApi,
         onSuccess: (data) => {
+            // 실패시 오류 메시지 출력
             if (data.error) {
                 toast({
                     title: `${data.error}`,
                     status: "error"
                 })
             }
+            // 성공 시 성공 메시지 출력
             if (data.ok) {
                 toast({
                     title: `${data.ok}`,
@@ -64,6 +77,7 @@ export default function BookTradePur() {
         }
     })
 
+    // 구매 입찰 폼 submit 리스너
     const onPur = ({purchase_price}:IForm) => {
         if (bookId) {
             const purchase_book_isbn = bookId
@@ -71,6 +85,7 @@ export default function BookTradePur() {
         } 
     }
 
+    // 즉시 구매 폼 submit 리스너
     const onImmediatePur = (event: React.FormEvent<HTMLInputElement>) => {
         event.preventDefault()
         if (bookId && immediateSellPriceQuery.data?.sell_price) {
@@ -88,6 +103,7 @@ export default function BookTradePur() {
                         구매 입찰
                     </Text>
                 </HStack>
+                {/* 책 정보 */}
                 <HStack mt={1} w={"100%"} justifyContent={"space-between"}>
                     <HStack>
                         <HStack maxH={200} overflow={"hidden"}>

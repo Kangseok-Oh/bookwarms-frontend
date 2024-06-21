@@ -1,10 +1,10 @@
-import { HStack, VStack, Text, Button, Grid,Image } from "@chakra-ui/react";
+import { HStack, VStack, Text, Button, Grid} from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { FaStar } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { searchBookListApi } from "../../api";
 import BookItem from "./BookItem";
 
+// 검색한 책 데이터 형식 지정
 interface IBookList {
     book_isbn: string;
     book_cover_path: string;
@@ -16,7 +16,9 @@ interface IBookList {
 }
 
 export default function SearchBookList() {
+    // 검색어 파라미터 추출
     const {keyWord} = useParams();
+    // 해당 검색어로 책 데이터 호출
     const searchListQuery = useQuery<IBookList[]>({queryKey: ["getSearchList", keyWord], queryFn: searchBookListApi});
 
     return (

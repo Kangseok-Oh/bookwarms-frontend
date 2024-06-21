@@ -5,12 +5,14 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdMenu } from "react-icons/md";
 import HomeCategory from "./HomeCategory";
 
-
+// 홈 화면 컴포넌트
 export default function Home() {
     return (
         <VStack alignItems={"center"} borderBottomWidth={1}>
             <VStack w={"70%"}>
+                {/* 카테고리 드로워 */}
                 <HomeCategory/>
+                {/* 이벤트 */}
                 <Box position={"relative"} maxH={"500"} overflow={"hidden"}>
                     <Image minH={"500"}  objectFit={"cover"} src="https://active.ridibooks.com/ridibooks_banner/1711679450927_MjQwMjI3.jpg"></Image>
                     <IconButton variant={"ghost"} position={"absolute"} top={"50%"} left={3} aria-label="previous event" icon={<IoIosArrowBack color="white"/>}/>
@@ -18,7 +20,6 @@ export default function Home() {
                     <Text color={"white"} position={"absolute"} bottom={10} left={20} fontSize={'xx-large'}>4월은 최대 40% 할인!</Text>
                 </Box>
                 <Grid minH={250} w={"100%"} mt={5} templateColumns={"repeat(4, 1fr)"} columnGap={6}>
-                    {/* 나중에 컴포넌트로 대체 */}
                     <VStack as={"a"} href="/book" rounded={"xl"} backgroundColor={"purple"}>
                         <Text mt={"125"}>베스트셀러</Text>
                     </VStack>

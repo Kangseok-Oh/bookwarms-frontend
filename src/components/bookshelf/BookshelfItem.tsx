@@ -1,6 +1,7 @@
 import { VStack, HStack, Text, Image } from "@chakra-ui/react";
 import { FaStar } from "react-icons/fa";
 
+// 책 데이터 형식 지정
 interface IBookItem {
     book_isbn: string;
     book_cover_path: string;
@@ -9,6 +10,7 @@ interface IBookItem {
     book_rating: number;
 }
 
+// 내 서재용 책 아이템 컴포넌트
 export default function BookshelfItem({book_isbn, book_cover_path, book_name, book_author_name, book_rating}: IBookItem) {
     return (
         <VStack as={"a"} alignItems={"flex-start"} href={`/epub/${book_isbn}`}>

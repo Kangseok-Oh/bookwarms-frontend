@@ -1,6 +1,7 @@
 import { HStack, VStack, Image, Text, IconButton } from "@chakra-ui/react";
 import { IoMdClose } from "react-icons/io";
 
+// 책 데이터 형식 지정
 interface IPaymentItem {
     coverPath: string;
     bookName: string;
@@ -8,6 +9,7 @@ interface IPaymentItem {
     bookPrice: number;
 }
 
+// 결제창 책 목록 아이템 컴포넌트
 export default function PaymentItem({coverPath, bookName, authorName, bookPrice}: IPaymentItem) {
     return (
         <HStack mt={1} w={"100%"} justifyContent={"space-between"}>
